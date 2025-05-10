@@ -1,18 +1,30 @@
-name: Hello World workflow
-run-name: ${{ github.actor }} is testing out GitHub Actions
-on: [push]
-#  # workflow_dispatch option enables manual trigger button
-#  workflow_dispatch:
+# our CI/CD workflow .yaml file
 
-# under job key we define the names and jobs definitions, typically as multiple steps
-# e.g. what commands to run, what environment to set
+name: CI/CD workflow
+
+on: workflow_dispatch
+
 jobs:
-  # our job name: `hello-world-job`
-  hello-world-job:
-    # our job definition
-    runs-on: ubuntu-latest
+   integration:
+      name: checks_and_tests
+      runs-on: ubuntu-latest
+      steps:
+         - name: Checkout code repo
+           # this action clones current repository to the VM where our job is running
+           # https://github.com/actions/checkout
+           uses: actions/checkout@v4
+           
+         - name: Setup uv
+           run: curl -LsSf https://astral.sh/uv/install.sh | sh
+           
+         - name: Install dependencies
+           run: uv sync --group integration
+           
+         - name: Run ruff check
+           run: uv run ruff check
+           
+         - name: Run pip-audit
+           run: uv run pip-audit --vulnerability-service pypi
 
-    # definitions of all job steps
-    steps:
-      - name: Print Hello World # step name, displayed on UI
-        run: echo "Hello world!"
+         - name: Run PyTest
+           run: uv run pytest tests

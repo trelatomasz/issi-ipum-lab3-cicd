@@ -1,7 +1,7 @@
 .PHONY: init prepare_artifacts start init_docker
 
 init:
-	uv venv --python 3.13 && \
+	uv venv --python 3.12 && \
 	. .venv/bin/activate
 	uv sync --all-groups
 	
