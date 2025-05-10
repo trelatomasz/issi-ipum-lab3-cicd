@@ -28,3 +28,19 @@ jobs:
 
          - name: Run PyTest
            run: uv run pytest tests
+   deployment:
+     name: deploy
+     runs-on: ubuntu-latest
+     steps:
+       - name: Checkout code repo
+         # this action clones current repository to the VM where our job is running
+         # https://github.com/actions/checkout
+         uses: actions/checkout@v4
+       - name: Setup uv
+         run: curl -LsSf https://astral.sh/uv/install.sh | sh
+       - name: Install dependencies
+         run: uv sync --group deployment
+       - name: Download model
+         run: uv run python main.py --script download
+       - name: Export model
+         run: uv run python main.py --script export
