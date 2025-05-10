@@ -40,6 +40,7 @@ jobs:
            run: uv run pytest tests
 
    deployment:
+     needs: [integration]
      if:  ${{ inputs.steps == 'all' }}
      name: deploy
      runs-on: ubuntu-latest
