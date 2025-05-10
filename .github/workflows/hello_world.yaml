@@ -1,7 +1,8 @@
 name: Hello World workflow
-on:
-  # workflow_dispatch option enables manual trigger button
-  workflow_dispatch:
+run-name: ${{ github.actor }} is testing out GitHub Actions
+#on: [push]
+#  # workflow_dispatch option enables manual trigger button
+#  workflow_dispatch:
 
 # under job key we define the names and jobs definitions, typically as multiple steps
 # e.g. what commands to run, what environment to set
@@ -13,5 +14,5 @@ jobs:
 
     # definitions of all job steps
     steps:
-      name: Print Hello World # step name, displayed on UI
-      run: echo "Hello world!"
+      - name: Print Hello World # step name, displayed on UI
+      - run: echo "Hello world!"
